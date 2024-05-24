@@ -23,7 +23,7 @@ namespace ReiCalcConsole
                 if (input == "")
                 {
                     // Blank expression, use a templated one
-                    input = "-320.591";
+                    input = ".591";
                 }
 
                 double result = calculator.Calculate(input);

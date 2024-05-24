@@ -1,4 +1,5 @@
 ﻿using ReiCalcLib.Tokens;
+using System.Globalization;
 using System.Text;
 
 namespace ReiCalcLib
@@ -19,7 +20,9 @@ namespace ReiCalcLib
 
                 if (lastToken == null)
                 {
-                    if (char.IsNumber(currentChar) || currentChar == '-')
+                    if (char.IsNumber(currentChar) ||
+                        currentChar == '-' ||
+                        currentChar == Symbols.DecimalSeparator)
                     {
                         // Number
                         if (TryFindAndParseNumber(expression, i, out _, out double? parsedNumber))
@@ -46,12 +49,16 @@ namespace ReiCalcLib
         {
             int lookahead = 1;
 
-            if (expression[startIndex] == '-')
+            if (expression[startIndex] == '-' ||
+                expression[startIndex] == Symbols.DecimalSeparator)
             {
-                // Need to skip the first char if it's a negative sign and assume the number continues past that
+                // Need to skip the first char if it's a negative sign or decimal separator
+                // and assume the number continues past that
                 ++lookahead;
             }
 
+            // There might be a better/more performant way of doing this, but this seems to work well enough for now.
+            // Regex could have worked too, would need to do some profiling to see which is faster.
             double? lastSuccessfulParseResult = null;
             double parseResult;
             while (startIndex + lookahead <= expression.Length &&
