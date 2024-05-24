@@ -15,6 +15,11 @@ namespace ReiCalcLib
             new MultiplyOperatorToken()
         };
 
+        /// <summary>
+        /// Converts the given math expression string to an array of tokens in the order they appear in the expression (left to right).
+        /// </summary>
+        /// <param name="expression">The math expression to tokenize.</param>
+        /// <returns>Array of tokens ordered by appearance from left to right.</returns>
         public Token[] TokenizeExpression(string expression)
         {
             // List of parsed tokens which will be returned at the end of this method.
@@ -38,15 +43,10 @@ namespace ReiCalcLib
 
                 if (lastToken == null || lastToken.GetType().IsSubclassOf(typeof(OperatorToken)))
                 {
-                    if (char.IsNumber(currentChar) ||
-                        currentChar == '-' ||
-                        currentChar == Symbols.DecimalSeparator)
+                    // Number
+                    if (TryParseNumber(expression, i, out _, out double? parsedNumber))
                     {
-                        // Number
-                        if (TryFindAndParseNumber(expression, i, out _, out double? parsedNumber))
-                        {
-                            AddToken(new NumberToken(parsedNumber.Value));
-                        }
+                        AddToken(new NumberToken(parsedNumber.Value));
                     }
                     else
                     {
@@ -55,7 +55,7 @@ namespace ReiCalcLib
                 }
                 else if (lastToken.GetType() == typeof(NumberToken))
                 {
-                    if (TryIdentifyOperator(expression, i, out _, out Type matchedOperatorType))
+                    if (TryParseOperator(expression, i, out _, out Type matchedOperatorType))
                     {
                         AddToken(Activator.CreateInstance(matchedOperatorType) as OperatorToken);
                     }
@@ -66,18 +66,19 @@ namespace ReiCalcLib
         }
 
         /// <summary>
-        /// 
+        /// Attempts to parse an operator token starting at the given start index.
+        /// Only checks against operators in <see cref="supportedOperatorTokens"/>.
         /// </summary>
-        /// <param name="expression"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="endIndex"></param>
+        /// <param name="expression">The complete expression string to search the operator in.</param>
+        /// <param name="startIndex">Index to start parsing from (must be the first character of the operator to be parsed).</param>
+        /// <param name="endIndex">Index of the last character of the parsed operator, -1 if no operator matches.</param>
         /// <param name="matchedOperatorType">
         /// The type of the operator that was matched, or null if nothing matches.
         /// Outputing the type instead of the operator instance to enforce the instantiation of a new operator
         /// in case operators can hold state at some point.
         /// </param>
-        /// <returns></returns>
-        private bool TryIdentifyOperator(
+        /// <returns>True if any operator matches, false otherwise.</returns>
+        private bool TryParseOperator(
             string expression,
             int startIndex,
             out int endIndex,
@@ -113,12 +114,30 @@ namespace ReiCalcLib
             return matchedOperatorType != null;
         }
 
-        private bool TryFindAndParseNumber(
+        /// <summary>
+        /// Finds the bounds of a number (double) string and parses it to a double.
+        /// </summary>
+        /// <param name="expression">The complete expression string to search the number in.</param>
+        /// <param name="startIndex">Starting index of the number. Character must be a number (0-9), -, or a decimal separator.</param>
+        /// <param name="endIndex">Index of the last character of the number in the expression. -1 if no number was parsed.</param>
+        /// <param name="result">The parsed number.</param>
+        /// <returns>True if a number was found and parsed, false otherwise.</returns>
+        private bool TryParseNumber(
             string expression,
             int startIndex,
             out int endIndex,
             out double? result)
         {
+            endIndex = -1;
+            result = null;
+
+            if (!char.IsNumber(expression[startIndex]) &&
+                expression[startIndex] != '-' &&
+                expression[startIndex] != Symbols.DecimalSeparator)
+            {
+                return false;
+            }
+
             int lookahead = 1;
 
             if (expression[startIndex] == '-' ||
@@ -132,15 +151,15 @@ namespace ReiCalcLib
             // There might be a better/more performant way of doing this, but this seems to work well enough for now.
             // Regex could have worked too, would need to do some profiling to see which is faster.
             double? lastSuccessfulParseResult = null;
-            double parseResult;
+            double parseTemp;
             while (startIndex + lookahead <= expression.Length &&
-                double.TryParse(expression.Substring(startIndex, lookahead), out parseResult))
+                double.TryParse(expression.Substring(startIndex, lookahead), out parseTemp))
             {
-                lastSuccessfulParseResult = parseResult;
+                lastSuccessfulParseResult = parseTemp;
                 ++lookahead;
             }
 
-            endIndex = startIndex + lookahead;
+            endIndex = lastSuccessfulParseResult.HasValue ? startIndex + lookahead : -1;
             result = lastSuccessfulParseResult;
             return lastSuccessfulParseResult.HasValue;
         }
