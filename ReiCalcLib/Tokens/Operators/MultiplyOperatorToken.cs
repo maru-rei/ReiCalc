@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ReiCalcLib.Tokens.Operators
 {
-    public class SubtractOperatorToken : OperatorToken
+    public class MultiplyOperatorToken : OperatorToken
     {
-        public override string ExpressionPattern => "-";
+        public override string ExpressionPattern => "*";
     }
 }

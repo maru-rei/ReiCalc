@@ -2,8 +2,6 @@
 {
     public abstract class OperatorToken : Token
     {
-        public NumberToken LeftValue { get; set; }
-
-        public NumberToken RightValue { get; set; }
+        public virtual string ExpressionPattern => null;
     }
 }

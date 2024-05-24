@@ -2,9 +2,6 @@
 {
     public class AddOperatorToken : OperatorToken
     {
-        public override string ToString()
-        {
-            return "+";
-        }
+        public override string ExpressionPattern => "+";
     }
 }

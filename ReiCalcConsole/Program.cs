@@ -23,7 +23,8 @@ namespace ReiCalcConsole
                 if (input == "")
                 {
                     // Blank expression, use a templated one
-                    input = ".591";
+                    input = "3 + 26 - -489420 * 4 + 1";
+                    // Expected result: 1957710
                 }
 
                 double result = calculator.Calculate(input);

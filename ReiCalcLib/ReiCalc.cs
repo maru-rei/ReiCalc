@@ -20,7 +20,7 @@ namespace ReiCalcLib
             // TODO: Validate the expression
 
             // Remove all whitespace from the expression
-            regexWhitespace.Replace(expression, "");
+            expression = regexWhitespace.Replace(expression, "");
 
             Token[] expressionTokens = tokenizer.TokenizeExpression(expression);
 
