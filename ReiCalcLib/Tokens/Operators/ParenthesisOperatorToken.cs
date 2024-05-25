@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace ReiCalcLib.Tokens.Operators
 {
-    public class MultiplyOperatorToken : OperatorToken
+    public abstract class ParenthesisOperatorToken : OperatorToken
     {
-        public override string ExpressionPattern => "*";
-
-        public override int Precedence => 3;
+        public override int Precedence => 5;
 
         public override EAssociativity Associativity => EAssociativity.Left;
     }

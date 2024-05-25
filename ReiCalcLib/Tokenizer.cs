@@ -12,7 +12,11 @@ namespace ReiCalcLib
         {
             new AddOperatorToken(),
             new SubtractOperatorToken(),
-            new MultiplyOperatorToken()
+            new MultiplyOperatorToken(),
+            new DivisionOperatorToken(),
+            new PowerOperatorToken(),
+            new LeftParenthesisOperatorToken(),
+            new RightParenthesisOperatorToken()
         };
 
         /// <summary>
@@ -41,19 +45,30 @@ namespace ReiCalcLib
             {
                 char currentChar = expression[i];
 
-                if (lastToken == null || lastToken.GetType().IsSubclassOf(typeof(OperatorToken)))
+                if (lastToken == null ||
+                    (lastToken is OperatorToken && lastToken is not RightParenthesisOperatorToken))
                 {
+                    // TODO: Implement handling of unexpected chars
+                    bool unexpectedCharFlag = false;
+
                     // Number
                     if (TryParseNumber(expression, i, out _, out double? parsedNumber))
                     {
                         AddToken(new NumberToken(parsedNumber.Value));
                     }
+                    else if (TryParseOperator(expression, i, out _, out Type matchedOperatorType))
+                    {
+                        if (matchedOperatorType == typeof(LeftParenthesisOperatorToken))
+                        {
+                            AddToken(Activator.CreateInstance(matchedOperatorType) as OperatorToken);
+                        }
+                    }
                     else
                     {
-                        // TODO: Handle unexpected char
+                        unexpectedCharFlag = true;
                     }
                 }
-                else if (lastToken.GetType() == typeof(NumberToken))
+                else if (lastToken is NumberToken || lastToken is RightParenthesisOperatorToken)
                 {
                     if (TryParseOperator(expression, i, out _, out Type matchedOperatorType))
                     {

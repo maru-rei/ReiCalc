@@ -2,6 +2,10 @@
 {
     public abstract class OperatorToken : Token
     {
-        public virtual string ExpressionPattern => null;
+        public abstract string ExpressionPattern { get; }
+
+        public abstract int Precedence { get; }
+
+        public abstract EAssociativity Associativity { get; }
     }
 }

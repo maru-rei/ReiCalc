@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ReiCalcLib.Tokens.Operators
 {
-    public class MultiplyOperatorToken : OperatorToken
+    public class DivisionOperatorToken : OperatorToken
     {
-        public override string ExpressionPattern => "*";
+        public override string ExpressionPattern => "/";
 
         public override int Precedence => 3;
 
