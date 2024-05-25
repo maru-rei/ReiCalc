@@ -8,11 +8,13 @@ namespace ReiCalcLib
     {
         private Regex regexWhitespace;
         private Tokenizer tokenizer;
+        private ShuntingYard shuntingYard;
 
         public ReiCalc()
         {
             regexWhitespace = new Regex(@"\s+");
             tokenizer = new Tokenizer();
+            shuntingYard = new ShuntingYard();
         }
 
         public double Calculate(string expression)
@@ -23,6 +25,7 @@ namespace ReiCalcLib
             expression = regexWhitespace.Replace(expression, "");
 
             Token[] expressionTokens = tokenizer.TokenizeExpression(expression);
+            Token[] rpnExpression = shuntingYard.Run(expressionTokens);
 
             return 42.1234;
         }
