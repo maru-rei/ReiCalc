@@ -7,5 +7,7 @@
         public abstract int Precedence { get; }
 
         public abstract EAssociativity Associativity { get; }
+
+        public abstract NumberToken Execute(params NumberToken[] inputTokens);
     }
 }

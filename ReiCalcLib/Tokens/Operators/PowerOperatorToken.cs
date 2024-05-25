@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReiCalcLib.Tokens.Operators
+﻿namespace ReiCalcLib.Tokens.Operators
 {
     public class PowerOperatorToken : OperatorToken
     {
@@ -13,5 +7,11 @@ namespace ReiCalcLib.Tokens.Operators
         public override int Precedence => 4;
 
         public override EAssociativity Associativity => EAssociativity.Right;
+
+        public override NumberToken Execute(params NumberToken[] inputTokens)
+        {
+            // TODO: Validate inputTokens
+            return new NumberToken(Math.Pow(inputTokens[0].Value, inputTokens[1].Value));
+        }
     }
 }

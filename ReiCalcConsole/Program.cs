@@ -27,7 +27,7 @@ namespace ReiCalcConsole
                     // Expected result: 1957710
 
                     input = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
-                    // Expected result: 42.875
+                    // Expected result: 3.00012207
                 }
 
                 double result = calculator.Calculate(input);
