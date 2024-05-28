@@ -23,4 +23,9 @@ body {
 
 .calculatorButton {
     min-width: 50px;
+    max-width: 50px;
+}
+
+.calculatorRow {
+    padding: 2px;
 }
