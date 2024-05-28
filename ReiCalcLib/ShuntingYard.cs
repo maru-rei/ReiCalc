@@ -1,10 +1,5 @@
 ﻿using ReiCalcLib.Tokens;
 using ReiCalcLib.Tokens.Operators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReiCalcLib
 {
@@ -12,6 +7,12 @@ namespace ReiCalcLib
 
     public class ShuntingYard
     {
+        /// <summary>
+        /// Rearranges an array of tokens in infix format (e.g. 1+2) into reverse Polish notation (e.g. 12+).
+        /// </summary>
+        /// <param name="infixTokens">The token array to be rearranged, must be in infix format.</param>
+        /// <returns>The rearranged array of tokens in reverse Polish notation.</returns>
+        /// <exception cref="NotImplementedException">Thrown when the algorithm hits an unhandled fault case.</exception>
         public Token[] Run(Token[] infixTokens)
         {
             Queue<Token> inputQueue = new Queue<Token>(infixTokens);
@@ -63,6 +64,7 @@ namespace ReiCalcLib
                     }
                     else
                     {
+                        // Non-parenthesis operators
                         while (operatorStack.Count > 0 &&
                             operatorStack.Peek() is not LeftParenthesisOperatorToken &&
                             (operatorStack.Peek().Precedence > inputOperatorToken.Precedence ||
@@ -75,6 +77,7 @@ namespace ReiCalcLib
                 }
             }
 
+            // Pop the remainder of the operator stack to the output
             while (operatorStack.Count > 0)
             {
                 if (operatorStack.Peek() is LeftParenthesisOperatorToken)

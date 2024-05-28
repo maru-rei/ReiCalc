@@ -4,6 +4,11 @@ namespace ReiCalcLib
 {
     public class RpnCalculator
     {
+        /// <summary>
+        /// Solves an expression that is supplied in reverse Polish notation and returns the result.
+        /// </summary>
+        /// <param name="rpnTokens">The array of tokens that represents the math expression in reverse Polish notation.</param>
+        /// <returns>Result of the calculation.</returns>
         public double Calculate(Token[] rpnTokens)
         {
             Stack<Token> stack = new Stack<Token>();

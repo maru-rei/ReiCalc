@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReiCalcLib
+﻿namespace ReiCalcLib
 {
     public static class Symbols
     {
+        // TODO: Make these static and take localization into account
         public const char DecimalSeparator = '.';
         public const char ThousandSeparator = ',';
     }

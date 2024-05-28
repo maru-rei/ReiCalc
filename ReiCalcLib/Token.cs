@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReiCalcLib
+﻿namespace ReiCalcLib
 {
+    /// <summary>
+    /// Base class for all tokens in mathmatical expressions.
+    /// </summary>
     public abstract class Token
     {
 

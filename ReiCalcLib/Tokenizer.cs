@@ -1,12 +1,13 @@
 ﻿using ReiCalcLib.Tokens;
 using ReiCalcLib.Tokens.Operations;
 using ReiCalcLib.Tokens.Operators;
-using System.Globalization;
-using System.Text;
 
 namespace ReiCalcLib
 {
-    public class Tokenizer
+    /// <summary>
+    /// Parses a string into a list of <see cref="Token"/> objects.
+    /// </summary>
+    internal class Tokenizer
     {
         private OperatorToken[] supportedOperatorTokens =
         {
@@ -20,47 +21,65 @@ namespace ReiCalcLib
         };
 
         /// <summary>
-        /// Converts the given math expression string to an array of tokens in the order they appear in the expression (left to right).
+        /// Intermediate token list wrapper object to enforce LastToken to always be set.
+        /// </summary>
+        private class IntermediateTokenCollection
+        {
+            /// <summary>
+            /// The token that was most recently added to the collection.
+            /// </summary>
+            public Token LastToken { get; private set; }
+
+            private List<Token> tokens;
+
+            public IntermediateTokenCollection()
+            {
+                tokens = new List<Token>();
+            }
+
+            public void Add(Token token)
+            {
+                tokens.Add(token);
+                LastToken = token;
+            }
+
+            public Token[] ToArray()
+            {
+                return tokens.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Converts the given math expression string to an array of <see cref="Token"/> in the order they appear in the expression (left to right).
         /// </summary>
         /// <param name="expression">The math expression to tokenize.</param>
         /// <returns>Array of tokens ordered by appearance from left to right.</returns>
         public Token[] TokenizeExpression(string expression)
         {
             // List of parsed tokens which will be returned at the end of this method.
-            // Do not add to this directly, use AddToken instead!
-            List<Token> tokens = new List<Token>();
-
-            StringBuilder tokenStringBuilder = new StringBuilder();
-            string tokenTempString = string.Empty;
-            Token lastToken = null;
-
-            // Convenience function to make it less likely to forget to set lastToken
-            void AddToken(Token newToken)
-            {
-                tokens.Add(newToken);
-                lastToken = newToken;
-            }
+            // Using a wrapper object because the last token must always be set when adding to the list.
+            // Hiding the internal list enforces this.
+            IntermediateTokenCollection tokens = new IntermediateTokenCollection();
 
             for (int i = 0; i < expression.Length; i++)
             {
-                char currentChar = expression[i];
-
-                if (lastToken == null ||
-                    (lastToken is OperatorToken && lastToken is not RightParenthesisOperatorToken))
+                if (tokens.LastToken == null ||
+                    (tokens.LastToken is OperatorToken && tokens.LastToken is not RightParenthesisOperatorToken))
                 {
                     // TODO: Implement handling of unexpected chars
                     bool unexpectedCharFlag = false;
 
-                    // Number
                     if (TryParseNumber(expression, i, out _, out double? parsedNumber))
                     {
-                        AddToken(new NumberToken(parsedNumber.Value));
+                        // Number
+                        tokens.Add(new NumberToken(parsedNumber.Value));
                     }
                     else if (TryParseOperator(expression, i, out _, out Type matchedOperatorType))
                     {
+                        // Special case for left parenthesis "("
                         if (matchedOperatorType == typeof(LeftParenthesisOperatorToken))
                         {
-                            AddToken(Activator.CreateInstance(matchedOperatorType) as OperatorToken);
+                            tokens.Add(Activator.CreateInstance(matchedOperatorType) as OperatorToken);
                         }
                     }
                     else
@@ -68,11 +87,12 @@ namespace ReiCalcLib
                         unexpectedCharFlag = true;
                     }
                 }
-                else if (lastToken is NumberToken || lastToken is RightParenthesisOperatorToken)
+                else if (tokens.LastToken is NumberToken || tokens.LastToken is RightParenthesisOperatorToken)
                 {
                     if (TryParseOperator(expression, i, out _, out Type matchedOperatorType))
                     {
-                        AddToken(Activator.CreateInstance(matchedOperatorType) as OperatorToken);
+                        // Operators
+                        tokens.Add(Activator.CreateInstance(matchedOperatorType) as OperatorToken);
                     }
                 }
             }
@@ -105,7 +125,9 @@ namespace ReiCalcLib
             foreach (OperatorToken operatorToken in supportedOperatorTokens)
             {
                 bool matches = false;
-
+                
+                // Regex could have worked here too, but then I'd need to substring the expression first
+                // which (I assume) might cause a bunch of GC to happen. This way nothing gets allocated or destroyed in the loop.
                 for (int iPat = 0; iPat < operatorToken.ExpressionPattern.Length; iPat++)
                 {
                     if (startIndex + iPat > expression.Length)
@@ -146,6 +168,7 @@ namespace ReiCalcLib
             endIndex = -1;
             result = null;
 
+            // Feels a bit hardcoded, but the language of math is unlikely to change in the foreseeable future
             if (!char.IsNumber(expression[startIndex]) &&
                 expression[startIndex] != '-' &&
                 expression[startIndex] != Symbols.DecimalSeparator)
