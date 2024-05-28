@@ -1,10 +1,119 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 d-none d-md-block"></div>
+        <div class="col-md-6">
+            <div class="row" style="min-height: 50px;">
+                <h3 id="ResultLabel"></h3>
+            </div>
+            <div class="row">
+                <input id="ExpressionInput" type="text" onchange="expressionInputChange()" />
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <!-- Functions -->
+                    <div class="row" style="padding: 1px;">
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="backspace()">⌫</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('(')">(</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar(')')">)</button></div>
+                    </div>
+                    <div class="row" style="padding: 1px;">
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="clearEntry()">CE</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('^2')">x<sup>2</sup></button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('^')">x<sup>y</sup></button></div>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <!-- Numbers and standard operators -->
+                    <div class="row" style="padding: 1px;">
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('7')">7</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('8')">8</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('9')">9</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('/')">/</button></div>
+                    </div>
+                    <div class="row" style="padding: 1px;">
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('4')">4</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('5')">5</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('6')">6</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('*')">x</button></div>
+                    </div>
+                    <div class="row" style="padding: 1px;">
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('1')">1</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('2')">2</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('3')">3</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('-')">-</button></div>
+                    </div>
+                    <div class="row" style="padding: 1px;">
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('0')">0</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('.')">.</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('+')">+</button></div>
+                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="calculate()">=</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 d-none d-md-block"></div>
+    </div>
 </div>
+
+@section scripts {
+    <script>
+        var expression = "";
+
+        function addChar(char) {
+            expression += char;
+            refreshExpressionLabel();
+        }
+
+        function backspace() {
+            if (expression == null || expression == "") return;
+
+            expression = expression.substring(0, expression.length - 1);
+            refreshExpressionLabel();
+        }
+
+        function clearEntry() {
+            expression = "";
+            refreshExpressionLabel();
+        }
+
+        function expressionInputChange() {
+            expression = $("#ExpressionInput").val();
+        }
+
+        function refreshExpressionLabel() {
+            $("#ExpressionInput").val(expression);
+        }
+
+        function calculate() {
+            console.log("Calculating...");
+            $.ajax({
+                url: "/api/math?expression=" + encodeURIComponent(expression),
+                type: "get",
+                success: function (output) {
+                    handleResponse(output);
+                }
+            });
+        }
+
+        function handleResponse(response) {
+            if (response.result != null && typeof(response.result) == "number") {
+                setOutputLabel(response.result);
+            }
+        }
+
+        function setOutputLabel(value) {
+            if (value == null || value == "") {
+                $("#ResultLabel").text("");
+            }
+            else {
+                $("#ResultLabel").text(value);
+            }
+        }
+    </script>
+}

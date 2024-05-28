@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.calculatorButton {
+    min-width: 50px;
+}

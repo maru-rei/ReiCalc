@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReiCalcApp", "ReiCalcApp\ReiCalcApp.csproj", "{5C9C3804-7BCC-4693-B32B-86937AB22CCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReiCalcApp", "ReiCalcApp\ReiCalcApp.csproj", "{5C9C3804-7BCC-4693-B32B-86937AB22CCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReiCalcLib", "ReiCalcLib\ReiCalcLib.csproj", "{D2615332-5BE8-4A6B-AD99-91B3082C97EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReiCalcLib", "ReiCalcLib\ReiCalcLib.csproj", "{D2615332-5BE8-4A6B-AD99-91B3082C97EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReiCalcConsole", "ReiCalcConsole\ReiCalcConsole.csproj", "{C33F6D44-E14F-4CC2-9708-117CBC1A21F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReiCalcConsole", "ReiCalcConsole\ReiCalcConsole.csproj", "{C33F6D44-E14F-4CC2-9708-117CBC1A21F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
