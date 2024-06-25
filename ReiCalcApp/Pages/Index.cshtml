@@ -6,8 +6,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3 d-none d-md-block"></div>
-        <div class="col-md-6">
+        <div class="col-lg-3 d-none d-lg-block"></div>
+        <div class="col-lg-6">
             <div class="row" style="min-height: 50px;">
                 <h3 id="ResultLabel"></h3>
             </div>
@@ -18,46 +18,46 @@
                 <div class="col-4">
                     <!-- Functions -->
                     <div class="row calculatorRow">
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="backspace()">⌫</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('(')">(</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar(')')">)</button></div>
+                        <div class="col-4 calculatorButtonContainer"><button class="btn btn-danger calculatorButton" onclick="backspace()">⌫</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('(')">(</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar(')')">)</button></div>
                     </div>
                     <div class="row calculatorRow">
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="clearEntry()">CE</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('^2')">x<sup>2</sup></button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('^')">x<sup>y</sup></button></div>
+                        <div class="col-4 calculatorButtonContainer"><button class="btn btn-warning calculatorButton" onclick="clearEntry()">CE</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('^2')">x<sup>2</sup></button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('^')">x<sup>y</sup></button></div>
                     </div>
                 </div>
                 <div class="col-4">
                     <!-- Numbers and standard operators -->
                     <div class="row calculatorRow">
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('7')">7</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('8')">8</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('9')">9</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('/')">/</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('7')">7</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('8')">8</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('9')">9</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('/')">/</button></div>
                     </div>
                     <div class="row calculatorRow">
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('4')">4</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('5')">5</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('6')">6</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('*')">x</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('4')">4</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('5')">5</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('6')">6</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('*')">x</button></div>
                     </div>
                     <div class="row calculatorRow">
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('1')">1</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('2')">2</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('3')">3</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('-')">-</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('1')">1</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('2')">2</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('3')">3</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('-')">-</button></div>
                     </div>
                     <div class="row calculatorRow">
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('0')">0</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('.')">.</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="addChar('+')">+</button></div>
-                        <div class="col-3"><button class="btn btn-primary calculatorButton" onclick="calculate()">=</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('0')">0</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('.')">.</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="addChar('+')">+</button></div>
+                        <div class="col-3 calculatorButtonContainer"><button class="btn btn-primary calculatorButton" onclick="calculate()">=</button></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 d-none d-md-block"></div>
+        <div class="col-lg-3 d-none d-lg-block"></div>
     </div>
 </div>
 
